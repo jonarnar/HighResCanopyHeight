@@ -34,6 +34,8 @@ The maps obtained with this model are available at https://wri-datalab.earthengi
 
 ![alt text](https://github.com/facebookresearch/HighResCanopyHeight/blob/main/fig_0_1_2.png)
 
+Fork by Jón Tómasson for easier predictions of new image data.
+
 ## Requirements
 
 pytorch,
@@ -45,11 +47,8 @@ Example of successful environment creation for inference
 ```
 conda create -n hrch python=3.9 -y
 conda activate hrch
-conda install pytorch==2.0.1 torchvision==0.15.2 pytorch-cuda=11.7 -c pytorch -c nvidia
-pip install pytorch_lightning==1.7 
-pip install pandas
-pip install matplotlib
-pip install torchmetrics==0.11.4
+conda install numpy=1.26.4 pytorch_lightning==1.7 pytorch==2.0.1 torchvision==0.15.2 pytorch-cuda=11.7 torchmetrics==0.11.4 pandas matplotlib -c pytorch -c nvidia -conda-forge
+
 ```
 
 
@@ -90,13 +89,9 @@ compressed_SSLlarge.pth (400M): ablation using a large model.
 ## Evaluation
 
 ```
- python inference.py --checkpoint saved_checkpoints/SSLhuge_satellite.pth 
+ python inference.py --csv ./data/my_data.csv --image_dir ./data/images/ 
 ```
-```
-mae 3.15
-r2_block 0.51
-Bias: -1.60
-```
+
 
 Here are the performance on aerial images to expect with the different models released. Please note that the 3 first models in this table are trained exclusively on satellite data and are evaluated here in an out of domain context. 
 
