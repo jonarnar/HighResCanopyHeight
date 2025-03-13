@@ -47,7 +47,7 @@ Example of successful environment creation for inference
 ```
 conda create -n hrch python=3.9 -y
 conda activate hrch
-conda install numpy=1.26.4 pytorch_lightning==1.7 pytorch==2.0.1 torchvision==0.15.2 pytorch-cuda=11.7 torchmetrics==0.11.4 pandas matplotlib -c pytorch -c nvidia -conda-forge
+conda install numpy=1.26.4 pytorch_lightning==1.7 pytorch==2.0.1 torchvision==0.15.2 pytorch-cuda=11.7 torchmetrics==0.11.4 pandas matplotlib -c pytorch -c nvidia -c conda-forge
 
 ```
 
