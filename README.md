@@ -89,17 +89,11 @@ compressed_SSLlarge.pth (400M): ablation using a large model.
 ## Evaluation
 
 ```
- python inference.py --csv ./data/my_data.csv --image_dir ./data/images/ 
+ python inference.py --csv ./data/my_data.csv --image_dir ./data/images/ --name output_inference
+
+ python inference.py
 ```
 
-
-Here are the performance on aerial images to expect with the different models released. Please note that the 3 first models in this table are trained exclusively on satellite data and are evaluated here in an out of domain context. 
-
-| | SSL large | SSL huge | compressed SSL huge | SSL aerial|
-| --- | ---| --- | --- | ---| 
-| MAE| 3.31  | 3.15  | 3.08 | 2.5 |
-| R2 block | 0.37 | 0.51 | 0.54 | 0.7 |
-| Bias | -1.4| -1.6 | -1.6 | -2.1 |
 
 ## Notes
 
