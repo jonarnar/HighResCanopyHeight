@@ -36,13 +36,9 @@ The maps obtained with this model are available at https://wri-datalab.earthengi
 
 Fork by Jón Tómasson for easier predictions of new image data.
 
-## Requirements
+## Setting up environment
 
-pytorch,
-pytorch lightning,
-pandas
-
-Example of successful environment creation for inference
+Example of successful environment creation for inference using [Anaconda](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html).
 
 ```
 conda create -n hrch python=3.9 -y
@@ -52,41 +48,25 @@ conda install numpy==1.26.4 pytorch-lightning==1.7 pytorch==2.0.1 torchvision==0
 ```
 
 
-## Data and pretrained models
-
-You can download the data and saved checkpoints from 
-```
-s3://dataforgood-fb-data/forests/v1/models/
-```
 
 ### Data
-
+To get the pretrained model you need the [AWS-CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html). 
 To prepare the data, in the cloned repository, run these commands:
+
 ```
 aws s3 --no-sign-request cp --recursive s3://dataforgood-fb-data/forests/v1/models/ .
 unzip data.zip
 rm data.zip
 ```
+The data.zip also contains an image folder with some aerial images.
 
-Although our method is designed to work from satellite images, it can also estimate canopy height from aerial images.
 
-We share aerial images for the Neon test set we created for the paper in data.zip. 
+## Running the inference
 
-To automate the color balancing without the need of Maxar images, we trained a network from aerial images (Neon train) to predict the 95th and 5th percentiles of the corresponding maxar images : saved_checkpoints/aerial_normalization_quantiles_predictor.ckpt
+To run the inference you need a .csv file with a list of images and an identifier for each image. An example is provided in ./data/my_data.csv.
+The images are cropped such that the used area is a 256x256 square area starting from the top left corner of the image.
 
-### SSL Pretrained models
-
-In the saved_checkpoints directory, there are:
-
-SSLhuge_satellite.pth (2.9G): encoder trained on satellite images, decoder trained on satellite images. Use this model for inference on GPUs. Best results using RGB satellite images in input. 
-
-compressed_SSLhuge.pth (749M): SSLhuge_satellite.pth quantized. Model used in the evaluations of the paper.
-
-compressed_SSLhuge_aerial.pth (749M): encoder trained on satellite images, decoder trained on aerial images.
-
-compressed_SSLlarge.pth (400M): ablation using a large model.
-
-## Evaluation
+The following to commands are equvalent. These are the default arguments. 
 
 ```
  python inference.py --csv ./data/my_data.csv --image_dir ./data/images/ --name output_inference
@@ -94,16 +74,15 @@ compressed_SSLlarge.pth (400M): ablation using a large model.
  python inference.py
 ```
 
+The output will be in the output_inference folder. For each input image there will be a generated visualisation image of the height map and 
+the height map stored as a numpy array you can load the height maps back into Python with:
+```
+import numpy as np
 
-## Notes
+a = np.load('filename.npy')
+```
 
-We do not include the GEDI correction step in this code release. 
 
-The folder "models" contains code borrowed from the Dinov2 team, we thank all contributors.
-
-The inference using compressed models has not been tested using GPUs (CPU only).
-
-The backbone weights are the same for all SSL models. The backbone has been trained on  images filtered to contain mainly vegetation. 
 
 ## License
 
